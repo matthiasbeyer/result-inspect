@@ -8,7 +8,6 @@ rust:
   - 1.37.0
   - stable
   - beta
-  - nightly
 
 before_script:
   - rustup component add clippy
