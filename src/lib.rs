@@ -38,3 +38,42 @@ impl<F, T, E> ResultInspectRef<F, T> for Result<T, E>
         }
     }
 }
+
+
+pub trait ResultInspectErr<F, E>
+    where F: FnOnce(&E),
+          E: Sized
+{
+    fn inspect_err(self, f: F) -> Self;
+}
+
+pub trait ResultInspectErrRef<F, E>
+    where F: FnOnce(&E),
+          E: Sized
+{
+    fn inspect_err(&self, f: F);
+}
+
+impl<F, T, E> ResultInspectErr<F, E> for Result<T, E>
+    where F: FnOnce(&E),
+          E: Sized
+{
+    fn inspect_err(self, f: F) -> Self {
+        if let Err(ref e) = self.as_ref() {
+            (f)(&e);
+        }
+
+        self
+    }
+}
+
+impl<F, T, E> ResultInspectErrRef<F, E> for Result<T, E>
+    where F: FnOnce(&E),
+          E: Sized
+{
+    fn inspect_err(&self, f: F) {
+        if let Err(ref e) = self {
+            (f)(&e);
+        }
+    }
+}
