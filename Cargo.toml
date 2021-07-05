@@ -11,6 +11,6 @@ keywords    = ["result", "util"]
 description = "Adds the missing Result::inspect() function"
 
 documentation = "https://docs.rs/result-inspect"
-repository    = "https://github.com/matthiasbeyer/result-inspect"
+repository    = "https://git.beyermatthi.as/result-inspect"
 
 [dependencies]
