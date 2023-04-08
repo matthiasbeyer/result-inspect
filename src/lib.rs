@@ -23,7 +23,7 @@ where
     T: Sized,
 {
     fn inspect(self, f: F) -> Self {
-        if let Ok(ref o) = self.as_ref() {
+        if let Ok(o) = self.as_ref() {
             (f)(o);
         }
 
@@ -65,7 +65,7 @@ where
     E: Sized,
 {
     fn inspect_err(self, f: F) -> Self {
-        if let Err(ref e) = self.as_ref() {
+        if let Err(e) = self.as_ref() {
             (f)(e);
         }
 
