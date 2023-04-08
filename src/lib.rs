@@ -24,7 +24,7 @@ where
 {
     fn inspect(self, f: F) -> Self {
         if let Ok(ref o) = self.as_ref() {
-            (f)(&o);
+            (f)(o);
         }
 
         self
@@ -38,7 +38,7 @@ where
 {
     fn inspect(&self, f: F) {
         if let Ok(ref o) = self {
-            (f)(&o);
+            (f)(o);
         }
     }
 }
@@ -66,7 +66,7 @@ where
 {
     fn inspect_err(self, f: F) -> Self {
         if let Err(ref e) = self.as_ref() {
-            (f)(&e);
+            (f)(e);
         }
 
         self
@@ -80,7 +80,7 @@ where
 {
     fn inspect_err(&self, f: F) {
         if let Err(ref e) = self {
-            (f)(&e);
+            (f)(e);
         }
     }
 }
