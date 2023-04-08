@@ -1,0 +1,100 @@
+name: CI
+
+on:
+  push:
+    branches: [master, staging, trying, release-*]
+  pull_request:
+    branches: [master, release-*]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  check:
+    name: check
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        rust:
+          - 1.60.0
+          - stable
+          - beta
+          # - nightly
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.rust }}
+      - uses: swatinem/rust-cache@v2
+      - name: cargo-check
+        run: cargo check --all-features
+
+
+  fmt:
+    name: format
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.60.0
+          components: rustfmt
+      - name: cargo-fmt
+        run: cargo fmt -- --check
+
+
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        rust:
+          - 1.60.0
+          - stable
+          - beta
+          # - nightly
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.rust }}
+      - uses: swatinem/rust-cache@v2
+      - name: cargo-test
+        run: cargo test --all --all-features
+
+
+  clippy:
+    name: clippy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.60.0
+          components: clippy
+      - uses: swatinem/rust-cache@v2
+      - name: cargo-clippy
+        run: cargo clippy --all --all-targets --all-features -- -D warnings
+
+
+  # We need some "accummulation" job here because bors fails (timeouts) to
+  # listen on matrix builds.
+  # Hence, we have some kind of dummy here that bors can listen on
+  ci-success:
+    name: CI
+    if: ${{ success() }}
+    needs:
+      - check
+      - clippy
+      - fmt
+      - test
+    runs-on: ubuntu-latest
+    steps:
+      - name: CI succeeded
+        run: exit 0
