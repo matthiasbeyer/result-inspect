@@ -6,7 +6,7 @@ In your project:
 
 ```
 git checkout -b add-ci
-git fetch github.com/matthiasbeyer/rust-ci-setup-bors master
+git fetch https://github.com/matthiasbeyer/rust-ci-setup-bors master
 git merge --no-ff --allow-unrelated-histories FETCH_HEAD
 ```
 
