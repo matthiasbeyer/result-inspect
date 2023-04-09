@@ -1,6 +1,6 @@
 [package]
 name     = "result-inspect"
-version  = "0.2.0"
+version  = "0.3.0"
 authors  = ["Matthias Beyer <mail@beyermatthias.de>"]
 edition  = "2018"
 
@@ -11,6 +11,6 @@ keywords    = ["result", "util"]
 description = "Adds the missing Result::inspect() function"
 
 documentation = "https://docs.rs/result-inspect"
-repository    = "https://git.beyermatthi.as/result-inspect"
+repository    = "https://github.com/matthiasbeyer/result-inspect"
 
 [dependencies]
